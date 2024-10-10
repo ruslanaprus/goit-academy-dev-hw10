@@ -10,10 +10,7 @@ public class TimezoneService {
     private static final Logger logger = LoggerFactory.getLogger(TimezoneService.class);
 
     public ZoneId getZoneId(String timezoneParam) {
-        logger.info("Received timezone parameter: {}", timezoneParam);
-
         if (timezoneParam == null || timezoneParam.isEmpty()) {
-            logger.info("No timezone provided, using UTC as default");
             return ZoneId.of("UTC");
         }
 
