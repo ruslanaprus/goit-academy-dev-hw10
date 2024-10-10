@@ -18,8 +18,15 @@ import java.time.ZoneId;
 public class TimeServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(TimeServlet.class);
 
-    private final TimezoneService timezoneService = new TimezoneService();
-    private final TimeResponseBuilder timeResponseBuilder = new TimeResponseBuilder();
+    private TimezoneService timezoneService;
+    private TimeResponseBuilder timeResponseBuilder;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.timezoneService = new TimezoneService();
+        this.timeResponseBuilder = new TimeResponseBuilder();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
