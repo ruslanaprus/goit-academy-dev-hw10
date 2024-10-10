@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.commons.text.StringEscapeUtils;
 import org.example.service.TimeResponseBuilder;
 import org.example.service.TimezoneService;
 import org.slf4j.Logger;
@@ -31,7 +32,7 @@ public class TimeServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String timezoneParam = req.getParameter("timezone");
+        String timezoneParam = escapeHtml(req.getParameter("timezone"));
         ZoneId zoneId;
 
         try {
@@ -42,7 +43,7 @@ public class TimeServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             try (PrintWriter writer = resp.getWriter()) {
                 writer.write("<html><body><h1>Invalid timezone format! Received timezone parameter: "
-                        + timezoneParam + "</h1></body></html>");
+                        + escapeHtml(timezoneParam) + "</h1></body></html>");
             }
             return;
         }
@@ -58,5 +59,9 @@ public class TimeServlet extends HttpServlet {
         }
 
         logger.info("TimeServlet request completed successfully.");
+    }
+
+    private String escapeHtml(String input) {
+        return input == null ? "" : StringEscapeUtils.escapeHtml4(input);
     }
 }
