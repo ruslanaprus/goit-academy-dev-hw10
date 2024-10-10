@@ -8,13 +8,15 @@ import java.time.ZoneOffset;
 
 public class TimezoneService {
     private static final Logger logger = LoggerFactory.getLogger(TimezoneService.class);
+    private static final String DEFAULT_TIMEZONE = "UTC";
+    private static final String UTC_PREFIX = "UTC";
 
     public ZoneId getZoneId(String timezoneParam) {
         if (timezoneParam == null || timezoneParam.isEmpty()) {
-            return ZoneId.of("UTC");
+            return ZoneId.of(DEFAULT_TIMEZONE);
         }
 
-        if (timezoneParam.startsWith("UTC")) {
+        if (timezoneParam.startsWith(UTC_PREFIX)) {
             try {
                 String offsetStr = timezoneParam.substring(3).trim();
 
@@ -23,7 +25,7 @@ public class TimezoneService {
                 }
 
                 ZoneOffset offset = ZoneOffset.of(offsetStr);
-                return ZoneId.ofOffset("UTC", offset);
+                return ZoneId.ofOffset(UTC_PREFIX, offset);
             } catch (Exception e) {
                 logger.error("Invalid offset format for timezone: {}", timezoneParam, e);
                 throw new IllegalArgumentException("Invalid timezone offset");
