@@ -12,12 +12,10 @@ public class TimeResponseBuilder {
     private static final Logger logger = LoggerFactory.getLogger(TimeResponseBuilder.class);
 
     public String buildResponse(ZoneId zoneId) {
-        // get current time with zone offset if applicable
         OffsetDateTime localTimeWithOffset = OffsetDateTime.now(zoneId);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String formattedTime = localTimeWithOffset.format(formatter);
 
-        // get the ZoneOffset part (e.g., +02:00)
         ZoneOffset offset = localTimeWithOffset.getOffset();
         String formattedTimeWithZone = formattedTime + " UTC" + offset.getId();
         logger.info("Formatted time: {}", formattedTimeWithZone);

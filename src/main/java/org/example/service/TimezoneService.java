@@ -17,18 +17,14 @@ public class TimezoneService {
             return ZoneId.of("UTC");
         }
 
-        // handle timezone with offset like UTC+2 or UTC-05:00
         if (timezoneParam.startsWith("UTC")) {
             try {
-                // extract the offset part (like +2 or -05:00), and remove any extra spaces
-                String offsetStr = timezoneParam.substring(3).trim();  // skip "UTC" and trim spaces
+                String offsetStr = timezoneParam.substring(3).trim();
 
-                // check if offset starts with '+' or '-'
                 if (!offsetStr.startsWith("+") && !offsetStr.startsWith("-")) {
                     offsetStr = "+" + offsetStr;
                 }
 
-                // create a ZoneOffset and return the ZoneId using that offset
                 ZoneOffset offset = ZoneOffset.of(offsetStr);
                 return ZoneId.ofOffset("UTC", offset);
             } catch (Exception e) {
@@ -37,7 +33,6 @@ public class TimezoneService {
             }
         }
 
-        // for other valid zone IDs (like Europe/Berlin)
         return ZoneId.of(timezoneParam);
     }
 }
