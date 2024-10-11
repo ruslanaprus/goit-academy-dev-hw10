@@ -3,6 +3,7 @@ package org.example.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 
@@ -28,7 +29,7 @@ public class TimezoneService {
                 return ZoneId.ofOffset(UTC_PREFIX, offset);
             } catch (Exception e) {
                 logger.error("Invalid offset format for timezone: {}", timezoneParam, e);
-                throw new IllegalArgumentException("Invalid timezone offset");
+                throw new DateTimeException("Invalid timezone offset");
             }
         }
 
