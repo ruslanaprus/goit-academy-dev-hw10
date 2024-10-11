@@ -31,7 +31,7 @@ public class TimeServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String timezoneParam = escapeHtml(req.getParameter("timezone"));
         logger.info("Received timezone parameter: {}", timezoneParam);
         ZoneId zoneId;
