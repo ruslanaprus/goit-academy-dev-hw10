@@ -1,42 +1,44 @@
 package org.example.util;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.text.StringEscapeUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 class ErrorResponseUtilTest {
+    private HttpServletRequest mockRequest;
     private HttpServletResponse mockResponse;
-    private StringWriter stringWriter;
-    private PrintWriter printWriter;
+    private RequestDispatcher mockDispatcher;
 
     @BeforeEach
     void setUp() throws IOException {
+        mockRequest = mock(HttpServletRequest.class);
         mockResponse = mock(HttpServletResponse.class);
-        stringWriter = new StringWriter();
-        printWriter = new PrintWriter(stringWriter);
-        when(mockResponse.getWriter()).thenReturn(printWriter);
+        mockDispatcher = mock(RequestDispatcher.class);
+        when(mockRequest.getRequestDispatcher("/WEB-INF/views/error.jsp")).thenReturn(mockDispatcher);
     }
 
     @Test
-    void testSendRequest_SetsStatusAndContentType() throws IOException {
+    void testSendRequest_SetsStatusAndContentType() throws IOException, ServletException {
         String errorMessage = "Invalid inout!";
 
-        ErrorResponseUtil.sendBadRequest(mockResponse, errorMessage);
+        // call the method under test
+        ErrorResponseUtil.sendBadRequest(mockRequest, mockResponse, errorMessage);
 
+        // verify that the response status was set to 400
         verify(mockResponse).setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        verify(mockResponse).setContentType("text/html");
 
-        printWriter.flush();
+        // verify that the request attributes were set correctly
+        verify(mockRequest).setAttribute("statusCode", HttpServletResponse.SC_BAD_REQUEST);
+        verify(mockRequest).setAttribute("message", errorMessage);
 
-        String expectedHtml = "<html><body><h1>" + StringEscapeUtils.escapeHtml4(errorMessage) + "</h1></body></html>";
-        assertEquals(expectedHtml, stringWriter.toString());
+        // verify that the RequestDispatcher was used to forward the request
+        verify(mockDispatcher).forward(mockRequest, mockResponse);
     }
 }
