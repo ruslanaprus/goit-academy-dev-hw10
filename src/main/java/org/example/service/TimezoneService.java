@@ -13,7 +13,7 @@ public class TimezoneService {
     private static final String UTC_PREFIX = "UTC";
 
     public ZoneId getZoneId(String timezoneParam) {
-        if (timezoneParam == null || timezoneParam.isEmpty()) {
+        if (timezoneParam == null || timezoneParam.trim().isEmpty()) {
             return ZoneId.of(DEFAULT_TIMEZONE);
         }
 
