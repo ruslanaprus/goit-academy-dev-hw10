@@ -34,7 +34,7 @@ public class TimeServlet extends HttpServlet {
 
         if (zoneId == null) {
             logger.error("ZoneId not found in request attributes.");
-            ErrorResponseUtil.sendBadRequest(resp, "Timezone information missing.");
+            ErrorResponseUtil.sendBadRequest(req, resp, "Timezone information missing.");
             return;
         }
 

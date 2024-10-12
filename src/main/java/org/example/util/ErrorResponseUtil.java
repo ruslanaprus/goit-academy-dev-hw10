@@ -1,7 +1,9 @@
 package org.example.util;
 
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,12 +12,13 @@ import java.io.IOException;
 public class ErrorResponseUtil {
     private static final Logger logger = LoggerFactory.getLogger(ErrorResponseUtil.class);
 
-    public static void sendBadRequest(HttpServletResponse res, String errorMessage) throws IOException {
+    public static void sendBadRequest(HttpServletRequest req, HttpServletResponse res, String errorMessage) throws IOException, ServletException {
         res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        res.setContentType("text/html");
-        String escapedMessage = StringEscapeUtils.escapeHtml4(errorMessage);
-        String errorHtml = "<html><body><h1>" + escapedMessage + "</h1></body></html>";
-        res.getWriter().write(errorHtml);
-        logger.debug("Sent 400 Bad Request response with message: {}", escapedMessage);
+        req.setAttribute("statusCode", HttpServletResponse.SC_BAD_REQUEST);
+        req.setAttribute("message", errorMessage);
+        logger.debug("Forwarding to error page with status 400 and message: {}", errorMessage);
+
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/error.jsp");
+        dispatcher.forward(req, res);
     }
 }

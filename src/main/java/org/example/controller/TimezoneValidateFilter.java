@@ -41,7 +41,7 @@ public class TimezoneValidateFilter extends HttpFilter {
             req.setAttribute("zoneId", zoneId);
         } catch (DateTimeException | IllegalArgumentException e) {
             logger.error("Invalid timezone parameter: {}", timezoneParam, e);
-            ErrorResponseUtil.sendBadRequest(res, "Invalid timezone parameter!");
+            ErrorResponseUtil.sendBadRequest(req, res, "Invalid timezone parameter!");
             return;
         }
 
