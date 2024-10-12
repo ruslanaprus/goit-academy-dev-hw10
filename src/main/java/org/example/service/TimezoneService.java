@@ -17,22 +17,39 @@ public class TimezoneService {
             return ZoneId.of(DEFAULT_TIMEZONE);
         }
 
-        if (timezoneParam.startsWith(UTC_PREFIX)) {
+        String trimmedParam = timezoneParam.trim();
+
+        if (trimmedParam.length() >= UTC_PREFIX.length() &&
+                trimmedParam.substring(0, UTC_PREFIX.length()).equalsIgnoreCase(UTC_PREFIX)) {
+
+            String offsetStr = trimmedParam.substring(UTC_PREFIX.length()).trim();
+
+            if (offsetStr.isEmpty()) {
+                return ZoneId.of(DEFAULT_TIMEZONE);
+            }
+
+            if (!offsetStr.startsWith("+") && !offsetStr.startsWith("-")) {
+                offsetStr = "+" + offsetStr;
+            }
+
             try {
-                String offsetStr = timezoneParam.substring(3).trim();
-
-                if (!offsetStr.startsWith("+") && !offsetStr.startsWith("-")) {
-                    offsetStr = "+" + offsetStr;
-                }
-
                 ZoneOffset offset = ZoneOffset.of(offsetStr);
-                return ZoneId.ofOffset(UTC_PREFIX, offset);
-            } catch (Exception e) {
-                logger.error("Invalid offset format for timezone: {}", timezoneParam, e);
-                throw new DateTimeException("Invalid timezone offset");
+                ZoneId zoneId = ZoneId.ofOffset(UTC_PREFIX, offset);
+                logger.info("Parsed ZoneId from UTC offset: {}", zoneId);
+                return zoneId;
+            } catch (DateTimeException e) {
+                logger.error("Invalid UTC offset format: '{}'", offsetStr, e);
+                throw new DateTimeException("Invalid UTC offset format: " + offsetStr, e);
             }
         }
 
-        return ZoneId.of(timezoneParam);
+        try {
+            ZoneId zoneId = ZoneId.of(trimmedParam);
+            logger.info("Parsed ZoneId: {}", zoneId);
+            return zoneId;
+        } catch (DateTimeException e) {
+            logger.error("Invalid timezone format: '{}'", trimmedParam, e);
+            throw new DateTimeException("Invalid timezone format: " + trimmedParam, e);
+        }
     }
 }
