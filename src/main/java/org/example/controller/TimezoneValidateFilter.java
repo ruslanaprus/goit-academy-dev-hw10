@@ -20,7 +20,15 @@ import java.time.ZoneId;
 public class TimezoneValidateFilter extends HttpFilter {
     private static final Logger logger = LoggerFactory.getLogger(TimezoneValidateFilter.class);
 
-    private static final TimezoneService timezoneService = new TimezoneService();
+    private TimezoneService timezoneService;
+
+    public TimezoneValidateFilter() {
+        this.timezoneService = new TimezoneService();
+    }
+
+    public void setTimezoneService(TimezoneService timezoneService) {
+        this.timezoneService = timezoneService;
+    }
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
