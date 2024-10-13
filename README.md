@@ -94,7 +94,7 @@ cd goit-academy-dev-hw10
 
 **View the Current Time**:
 
-1. Navigate to `http://localhost:8080/time?timezone=Europe/London`. 
+1. Navigate to http://localhost:8080/time?timezone=Europe/London. 
 2. Replace `Europe/London` with any valid timezone identifier (e.g., `America/New_York` or `UTC+3`). 
 3. The application will display the current time in the specified timezone.
 
