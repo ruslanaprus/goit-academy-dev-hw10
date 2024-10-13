@@ -62,7 +62,7 @@ The application provides the following functionalities:
 
 ### Prerequisites
 
-- **Java 11** installed on your machine.
+- **Java 21** installed on your machine.
 - **Gradle** installed or use the provided Gradle wrapper (`gradlew`).
 - A **Java servlet container** like Apache Tomcat 10.
 
@@ -105,18 +105,10 @@ If an invalid or missing timezone parameter is provided, the application display
 ### Example URLs
 
 To view the current time in UTC:
-```shell
 http://localhost:8080/time?timezone=UTC
-```
 
 To view the time in a specific offset:
-```shell
 http://localhost:8080/time?timezone=UTC+3
-```
-
 
 Invalid timezone example:
-```shell
 http://localhost:8080/time?timezone=InvalidZone
-```
-
