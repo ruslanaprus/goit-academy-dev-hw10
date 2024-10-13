@@ -26,3 +26,7 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+war {
+    archiveFileName = "time-servlet-${version}.war"
+}
