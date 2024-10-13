@@ -82,13 +82,28 @@ cd goit-academy-dev-hw10
 
 3. **Deploy the WAR file**:
 
-- The built `.war` file can be found in the `build/libs` directory.
-- Deploy this file to your servlet container (e.g., place it in the `webapps` directory of Tomcat).
+- The built `.war` file will be located in the `build/libs` directory.
+- Deploy the `.war` file to your servlet container (e.g., place it to the `webapps` directory of your Tomcat server).
 
 4. **Start the server**:
 
 - Start your servlet container (e.g., `catalina.sh run` for Tomcat).
 - Visit `http://localhost:8080` to access the application.
+
+**Optional: Deploy Using Docker**
+
+Alternatively, you can deploy the application using Docker with the official Tomcat 10 image from Docker Hub. You can modify the Dockerfile to use the latest image version if necessary.
+
+To build the Docker image:
+
+```shell
+docker build -t tomcat-time-servlet:1.0 .
+```
+
+To run the container:
+```shell
+docker run -d -p 8080:8080 --name time-servlet-app tomcat-time-servlet:1.0
+```
 
 ### Using the Application
 
